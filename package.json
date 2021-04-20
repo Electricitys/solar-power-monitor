@@ -58,6 +58,7 @@
     "pg": "^8.5.1",
     "sequelize": "^6.5.0",
     "serve-favicon": "^2.5.0",
+    "uuid": "^8.3.2",
     "winston": "^3.3.3"
   },
   "devDependencies": {
@@ -65,5 +66,10 @@
     "eslint": "^7.21.0",
     "mocha": "^8.3.0",
     "nodemon": "^2.0.7"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "public/"
+    ]
   }
 }

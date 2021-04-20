@@ -29,7 +29,7 @@
     }
   },
   "postgres": {
-    "connection": "postgres://postgres:@localhost:5432/starter_web_application",
+    "connection": "postgres://postgres:ilomon0123@localhost:5432/solar_power_monitor",
     "ssl": false
   }
 }
