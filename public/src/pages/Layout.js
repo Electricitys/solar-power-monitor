@@ -3,11 +3,19 @@ import { Popover2 as Popover } from "@blueprintjs/popover2";
 import { Box, Flex } from "components/Grid";
 import DevicesView from "./Devices";
 import { forwardRef } from "react";
-import { Link, Route, Switch, useLocation } from "react-router-dom";
+import { Link, Route, Switch, useHistory, useLocation } from "react-router-dom";
 import View from "./View";
+import { useClient } from "components/client";
 
 const Layout = () => {
   const location = useLocation();
+  const history = useHistory();
+  const client = useClient();
+  const onLogout = () => {
+    client.doLogout().then(() => {
+      history.push("/login");
+    });
+  }
   return (
     <Box height="100vh">
       <Box
@@ -64,7 +72,7 @@ const Layout = () => {
                 <Menu>
                   <MenuItem target="_blank" href="https://wa.me/085299482331?text=Tolong%20Aku" icon="lifesaver" text="Tanya ke Admin" />
                   <MenuDivider />
-                  <MenuItem intent="danger" icon="log-out" text="Logout" />
+                  <MenuItem intent="danger" icon="log-out" text="Logout" onClick={onLogout} />
                 </Menu>
               }
             >

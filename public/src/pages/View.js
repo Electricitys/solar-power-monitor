@@ -8,28 +8,46 @@ import { Box, Flex } from "components/Grid";
 import ChartView from "./ChartView";
 import TableView from "./TableView";
 import Select from "components/Select";
+import { useClient } from "components/client";
 
 const View = () => {
+  const client = useClient();
   const [dateRange, setDateRange] = useState([
     moment().startOf("month").toDate(),
     moment().endOf("month").toDate()
   ]);
+  const [loading, setLoading] = useState({
+    data: false,
+    device: false
+  })
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [devices, setDevices] = useState([]);
   const [data, setData] = useState([]);
 
   const fetchDevice = async () => {
+    if (devices.length > 0) return;
+    setLoading(loading => ({ ...loading, device: true }));
     try {
-      setDevices([{
-        label: "Bunaken",
-        value: 1
-      }])
+      const { data } = await client.devices.find({
+        query: {
+          $select: ["id", "label"]
+        }
+      });
+      console.log(data);
+      setDevices(data.map(({ id, label }) => ({
+        label: label,
+        value: id
+      })))
+      setLoading(loading => ({ ...loading, device: false }));
     } catch (err) {
       console.error(err);
     }
   }
 
-  const fetchData = async () => {
+  const fetchData = async ({
+    range,
+    deviceId
+  }) => {
     try {
       setData([{
         id: 1,
@@ -41,14 +59,17 @@ const View = () => {
   }
 
   useEffect(() => {
-    fetchData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (selectedDevice === null) return;
+    fetchData({
+      range: dateRange,
+      deviceId: selectedDevice,
+    });
+  }, [selectedDevice, dateRange]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Flex
       flexDirection="column"
       height="100%"
-    // pb="40px"
     >
       <Box pt={3} textAlign="center">
         <Box mb={2}>
@@ -58,6 +79,7 @@ const View = () => {
             placeholder="Select Device"
             value={selectedDevice}
             onOpening={fetchDevice}
+            loading={loading["device"]}
             onChange={(option) => {
               setSelectedDevice(option.value);
             }}

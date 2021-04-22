@@ -9,7 +9,7 @@ const ChartView = ({ data }) => {
       a: i,
       b: Math.floor(Math.random() * 100)
     }))
-  }, [data]);
+  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
   const fields = [{
     label: "Power In",
     color: "red",

@@ -5,7 +5,7 @@ import { Cell, Column, Table } from "@blueprintjs/table";
 const TableView = ({ data }) => {
   const items = useMemo(() => {
     return [];
-  }, [data]);
+  }, [data]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   const cellRenderer = (rowIndex) => {
     return <Cell>{`${rowIndex}`}</Cell>
@@ -21,6 +21,10 @@ const TableView = ({ data }) => {
         defaultColumnWidth={100}
         maxColumnWidth={250}
       >
+        <Column
+          name="Timestamp"
+          cellRenderer={cellRenderer}
+        />
         <Column
           name="Voltage In"
           cellRenderer={cellRenderer}
