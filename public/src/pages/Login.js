@@ -25,7 +25,7 @@ const Login = () => {
   }
 
   return (
-    <Box mt={4} maxWidth={360} mx="auto">
+    <Box mt={4} px={3} maxWidth={360} mx="auto">
       <Formik
         initialValues={{
           "email": "",

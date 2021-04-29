@@ -33,7 +33,7 @@ class Client {
   }
 
   get devices() { return this.client.service('devices'); }
-  get dataLake() { return this.client.service('data-lake'); }
+  get dataLake() { return this.client.service('datalake'); }
   get users() { return this.client.service('users'); }
 }
 

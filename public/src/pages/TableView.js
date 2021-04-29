@@ -1,14 +1,13 @@
 import { Box } from "components/Grid";
-import { useMemo } from "react";
 import { Cell, Column, Table } from "@blueprintjs/table";
+import moment from "moment";
 
 const TableView = ({ data }) => {
-  const items = useMemo(() => {
-    return [];
-  }, [data]);  // eslint-disable-line react-hooks/exhaustive-deps
-
-  const cellRenderer = (rowIndex) => {
-    return <Cell>{`${rowIndex}`}</Cell>
+  const cellRenderer = (rowIndex, field) => {
+    let ret = data[rowIndex][field];
+    if(field === "timestamp")
+      ret = moment(data[rowIndex]["createdAt"]).format("ddd, DD MMM YY");
+    return <Cell>{ret}</Cell>
   }
 
   return (
@@ -17,37 +16,37 @@ const TableView = ({ data }) => {
       pt={2}
     >
       <Table
-        numRows={100}
+        numRows={data.length}
         defaultColumnWidth={100}
         maxColumnWidth={250}
       >
         <Column
           name="Timestamp"
-          cellRenderer={cellRenderer}
+          cellRenderer={(idx) => cellRenderer(idx, "timestamp")}
         />
         <Column
           name="Voltage In"
-          cellRenderer={cellRenderer}
+          cellRenderer={(idx) => cellRenderer(idx, "voltageIn")}
         />
         <Column
           name="Current In"
-          cellRenderer={cellRenderer}
+          cellRenderer={(idx) => cellRenderer(idx, "currentIn")}
         />
         <Column
           name="Power In"
-          cellRenderer={cellRenderer}
+          cellRenderer={(idx) => cellRenderer(idx, "powerIn")}
         />
         <Column
           name="Voltage Out"
-          cellRenderer={cellRenderer}
+          cellRenderer={(idx) => cellRenderer(idx, "voltageOut")}
         />
         <Column
           name="Current Out"
-          cellRenderer={cellRenderer}
+          cellRenderer={(idx) => cellRenderer(idx, "currentOut")}
         />
         <Column
           name="Power Out"
-          cellRenderer={cellRenderer}
+          cellRenderer={(idx) => cellRenderer(idx, "powerOut")}
         />
       </Table>
     </Box>

@@ -38,9 +38,6 @@ module.exports = function (app) {
   devices.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
-    const { datalake } = models;
-
-    devices.hasMany(datalake);
   };
 
   return devices;

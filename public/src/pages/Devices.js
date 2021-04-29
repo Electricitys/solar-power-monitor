@@ -1,4 +1,4 @@
-import { Button, Dialog, InputGroup } from "@blueprintjs/core";
+import { Button, Dialog, InputGroup, Tag } from "@blueprintjs/core";
 import { useEffect, useState } from "react";
 import { Box, Flex } from "components/Grid";
 import { AspectRatio } from "components/AspectRatio";
@@ -122,7 +122,8 @@ const DevicesView = () => {
     <Box p={3} maxWidth={360} mx="auto">
       <Flex alignItems="center" mb={3}>
         <Box flexGrow={1}>
-          Devices
+          <span>Devices </span>
+          <Tag minimal={true}>{devices.length}</Tag>
         </Box>
         <Box>
           <Button

@@ -1,9 +1,6 @@
 import { Button, Classes, FormGroup, InputGroup } from "@blueprintjs/core";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { Box, Flex } from "components/Grid";
-import { MapboxImageLink } from "components/mapboxImageLink";
-import { AspectRatio } from "components/AspectRatio";
 import { useClient } from "components/client";
 
 const Scheme = Yup.object().shape({

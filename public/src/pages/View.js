@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { Route, Switch } from "react-router-dom";
-import { Button, Icon } from "@blueprintjs/core";
+import { Button, Icon, NonIdealState } from "@blueprintjs/core";
 import { Popover2 as Popover } from "@blueprintjs/popover2";
 import { DatePicker } from "@blueprintjs/datetime";
 import { Box, Flex } from "components/Grid";
@@ -22,6 +22,11 @@ const View = () => {
   })
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [devices, setDevices] = useState([]);
+  const [paging, setPaging] = useState({
+    limit: 0,
+    skip: 0,
+    total: 0
+  });
   const [data, setData] = useState([]);
 
   const fetchDevice = async () => {
@@ -48,11 +53,25 @@ const View = () => {
     range,
     deviceId
   }) => {
+    console.log(deviceId);
     try {
-      setData([{
-        id: 1,
-        value: 2
-      }])
+      const res = await client.dataLake.find({
+        query: {
+          $select: ["createdAt", "currentIn", "currentOut", "powerIn", "powerOut", "voltageIn", "voltageOut", "id"],
+          deviceId: deviceId,
+          createdAt: {
+            $gte: moment(range[0]).toISOString(),
+            $lte: moment(range[1]).toISOString()
+          }
+        }
+      });
+      console.log(res);
+      await setData(res.data);
+      await setPaging({
+        limit: res.limit,
+        skip: res.skip,
+        total: res.total
+      });
     } catch (err) {
       console.error(err);
     }
@@ -60,11 +79,18 @@ const View = () => {
 
   useEffect(() => {
     if (selectedDevice === null) return;
+    console.log(selectedDevice);
     fetchData({
       range: dateRange,
       deviceId: selectedDevice,
     });
   }, [selectedDevice, dateRange]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    client.dataLake.on("created", ({ deviceId, ...res }) => {
+      setData(data => [...data, res]);
+    });
+  }, []);
 
   return (
     <Flex
@@ -119,20 +145,28 @@ const View = () => {
           position: "relative"
         }}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          }}
-        >
-          <Switch>
-            <Route path="/chart" render={props => <ChartView {...props} data={data} />} />
-            <Route path="/table" render={props => <TableView {...props} data={data} />} />
-          </Switch>
-        </Box>
+        {selectedDevice === null && (
+          <NonIdealState
+            icon="select"
+            description="Please select one Device first."
+          />
+        )}
+        {selectedDevice !== null && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0
+            }}
+          >
+            <Switch>
+              <Route path="/chart" render={props => <ChartView {...props} data={data} />} />
+              <Route path="/table" render={props => <TableView {...props} data={data} paging={paging} />} />
+            </Switch>
+          </Box>
+        )}
       </Box>
     </Flex>
   )
