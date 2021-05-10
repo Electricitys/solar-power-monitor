@@ -2,38 +2,51 @@ import { Box } from "components/Grid";
 import Card from "components/Card";
 import { useMemo } from "react";
 import Chart from "components/Chart";
+import _l from "lodash";
+import moment from "moment";
 
 const ChartView = ({ data }) => {
   const items = useMemo(() => {
-    return new Array(10).fill(0).map((_, i) => ({
-      a: i,
-      b: Math.floor(Math.random() * 100)
-    }))
+    const ret = _l.chain(data)
+      .map(({ createdAt, ...value }) => {
+        value.timestamp = moment(createdAt).unix();
+        return value;
+      })
+      .value()
+      ;
+    console.log(ret);
+    return ret;
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
   const fields = [{
     label: "Power In",
     color: "red",
-    data: items
+    data: items,
+    dataKey: "powerIn"
   }, {
     label: "Power Out",
     color: "red",
-    data: items
+    data: items,
+    dataKey: "powerOut"
   }, {
     label: "Voltage In",
     color: "red",
-    data: items
+    data: items,
+    dataKey: "voltageIn"
   }, {
     label: "Voltage Out",
     color: "red",
-    data: items
+    data: items,
+    dataKey: "voltageOut"
   }, {
     label: "Current In",
     color: "red",
-    data: items
+    data: items,
+    dataKey: "currentIn"
   }, {
     label: "Current Out",
     color: "red",
-    data: items
+    data: items,
+    dataKey: "currentOut"
   }]
   return (
     <Box
@@ -48,6 +61,8 @@ const ChartView = ({ data }) => {
           <Card p={0}>
             <Chart
               ratio="16:9"
+              axisDataKey="timestamp"
+              valueDataKey={field.dataKey}
               color={field.color}
               data={field.data}
               label={field.label}

@@ -2,8 +2,9 @@ import { Line, LineChart, XAxis } from "recharts";
 import ResizeSensor from "components/ResizeSensor";
 import { AspectRatio } from "components/AspectRatio";
 import { Box } from "./Grid";
+import moment from "moment";
 
-const Chart = ({ ratio, label, data }) => {
+const Chart = ({ ratio, label, data, valueDataKey, axisDataKey }) => {
   return (
     <ResizeSensor>
       {({ width, height }) => (
@@ -12,12 +13,18 @@ const Chart = ({ ratio, label, data }) => {
             <LineChart height={height} width={width} data={data}>
               <Line
                 label={label}
-                dataKey="b"
+                dataKey={valueDataKey}
               />
               <XAxis
                 mirror
-                dataKey="a"
+                dataKey={axisDataKey}
                 type="number"
+                scale="time"
+                tickFormatter={(tick) => {
+                  return moment.unix(tick).format("HH:mm:ss");
+                  // return moment.unix(tick).format("ddd");
+                }}
+                domain={['dataMin', 'dataMax']}
               />
             </LineChart>
             <Box
