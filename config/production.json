@@ -1,5 +1,5 @@
 {
-  "host": "starter-web-application-app.feathersjs.com",
+  "host": "HOST",
   "port": "PORT",
   "postgres": {
     "connection": "DATABASE_URL",
