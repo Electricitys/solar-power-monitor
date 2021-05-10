@@ -90,7 +90,7 @@ const View = () => {
     client.dataLake.on("created", ({ deviceId, ...res }) => {
       setData(data => [...data, res]);
     });
-  }, []);
+  }, [client]);
 
   return (
     <Flex
