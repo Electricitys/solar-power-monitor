@@ -48,6 +48,7 @@ const Login = () => {
               <InputGroup
                 id="f-email"
                 name="email"
+                type="text"
                 value={values["email"]}
                 onChange={handleChange}
               />
@@ -59,6 +60,7 @@ const Login = () => {
               <InputGroup
                 id="f-password"
                 name="password"
+                type="password"
                 value={values["password"]}
                 onChange={handleChange}
               />
