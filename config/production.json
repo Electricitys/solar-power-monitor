@@ -3,6 +3,9 @@
   "port": "PORT",
   "postgres": {
     "connection": "DATABASE_URL",
-    "ssl": true
+    "ssl": {
+      "required": true,
+      "rejectUnauthorized": false
+    }
   }
 }
