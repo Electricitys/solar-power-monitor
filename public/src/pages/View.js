@@ -35,6 +35,7 @@ const View = () => {
     try {
       const { data } = await client.devices.find({
         query: {
+          $limit: 1000,
           $select: ["id", "label"]
         }
       });
@@ -57,6 +58,7 @@ const View = () => {
     try {
       const res = await client.dataLake.find({
         query: {
+          $limit: 1000,
           $select: ["createdAt", "currentIn", "currentOut", "powerIn", "powerOut", "voltageIn", "voltageOut", "id"],
           deviceId: deviceId,
           createdAt: {
@@ -79,7 +81,6 @@ const View = () => {
 
   useEffect(() => {
     if (selectedDevice === null) return;
-    console.log(selectedDevice);
     fetchData({
       range: dateRange,
       deviceId: selectedDevice,
@@ -87,10 +88,15 @@ const View = () => {
   }, [selectedDevice, dateRange]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    client.dataLake.on("created", ({ deviceId, ...res }) => {
+    const onCreated = ({ deviceId, ...res }) => {
+      if (selectedDevice !== deviceId) return;
       setData(data => [...data, res]);
-    });
-  }, [client]);
+    }
+    client.dataLake.on("created", onCreated);
+    return ()=> {
+      client.dataLake.removeListener("created", onCreated);
+    }
+  }, [selectedDevice, client]);
 
   return (
     <Flex
