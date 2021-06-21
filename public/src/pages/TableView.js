@@ -6,7 +6,7 @@ const TableView = ({ data }) => {
   const cellRenderer = (rowIndex, field) => {
     let ret = data[rowIndex][field];
     if (field === "timestamp") {
-      ret = moment(data[rowIndex]["createdAt"]).format("ddd, DD MMM YY");
+      ret = moment(data[rowIndex]["createdAt"]).format("ddd, DD MMM YY [at] hh:mm A");
     }
     else {
       ret = Math.abs(ret);
