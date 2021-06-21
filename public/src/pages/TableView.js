@@ -5,8 +5,12 @@ import moment from "moment";
 const TableView = ({ data }) => {
   const cellRenderer = (rowIndex, field) => {
     let ret = data[rowIndex][field];
-    if(field === "timestamp")
+    if (field === "timestamp") {
       ret = moment(data[rowIndex]["createdAt"]).format("ddd, DD MMM YY");
+    }
+    else {
+      ret = Math.abs(ret);
+    }
     return <Cell>{ret}</Cell>
   }
 
