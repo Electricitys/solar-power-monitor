@@ -12,9 +12,9 @@ const ChartView = ({ data }) => {
         value.timestamp = moment(createdAt).unix();
         return value;
       })
+      .sortBy(({ timestamp }) => timestamp)
       .value()
       ;
-    console.log(ret);
     return ret;
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
   const fields = [{
