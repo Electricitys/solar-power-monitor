@@ -3,6 +3,7 @@ import { useClient } from "components/client";
 import { Box } from "components/Grid";
 import { Formik } from "formik";
 import { useHistory } from "react-router";
+import pf_logo from "assets/pertamina-foundation.jpg";
 
 const Login = () => {
   const client = useClient();
@@ -77,7 +78,11 @@ const Login = () => {
           </form>
         )}
       </Formik>
-    </Box >
+      <Box py="4" textAlign="center" opacity={0.5}>
+        <Box as="h3">Sponsor:</Box>
+        <Box sx={{ width: "100%" }} as="img" alt="Pertamina Foundation" src={pf_logo} />
+      </Box>
+    </Box>
   )
 }
 
