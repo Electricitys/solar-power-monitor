@@ -79,7 +79,7 @@ const Login = () => {
         )}
       </Formik>
       <Box py="4" textAlign="center" opacity={0.5}>
-        <Box as="h3">Sponsor:</Box>
+        <Box as="h3">Supported by</Box>
         <Box sx={{ width: "100%" }} as="img" alt="Pertamina Foundation" src={pf_logo} />
       </Box>
     </Box>
